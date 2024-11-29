@@ -24,6 +24,7 @@ import com.sumologic.sumobot.plugins.BotPlugin
 
 import scala.util.Random
 
+
 class Beer extends BotPlugin with TimeHelpers {
 
   override protected def help: String = "I'll voice my opinion about certain beverages when appropriate."
@@ -39,6 +40,12 @@ class Beer extends BotPlugin with TimeHelpers {
     "Ah, beer. So many choices, and it makes so little difference.",
     "Hey, that was my last beer! You bastard! I'll kill you!"
   )
+}
+class Beer extends BotPlugin {
+
+  override protected def help: String = "I'll voice my opinion about certain beverages when appropriate."
+
+  private val BeerMention = matchText(".*(beer[s]?).*")
 
   private var lastChimedIn = 0L
 
@@ -46,7 +53,8 @@ class Beer extends BotPlugin with TimeHelpers {
     case message@IncomingMessage(BeerMention(beer), _, _, _, _, _, _) =>
       if (now - lastChimedIn > 60000 && Random.nextInt(10) < 8) {
         lastChimedIn = now
-        message.say(chooseRandom(BeerPhrases: _*))
+        message.say(chooseRandom(Beer.BeerPhrases: _*))
       }
   }
 }
+
